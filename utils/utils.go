@@ -13,3 +13,16 @@ func ReadInput(filename string) []byte {
 	}
 	return bytes
 }
+
+func ChunkInput(input []byte) [][]byte {
+	var chunks [][]byte
+	lastStart := 0
+	for i, b := range input {
+		if b == '\n' {
+			chunks = append(chunks, input[lastStart:i])
+			lastStart = i + 1
+
+		}
+	}
+	return chunks
+}
