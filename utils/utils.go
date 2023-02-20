@@ -26,3 +26,10 @@ func ChunkInput(input []byte) [][]byte {
 	}
 	return chunks
 }
+
+func Abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
+}
