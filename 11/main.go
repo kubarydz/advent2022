@@ -70,19 +70,23 @@ func calculateV1(monkeys []*monkey) int {
 	return mb[len(mb)-1] * mb[len(mb)-2]
 }
 
+// chinese remainder theorem magic
 func calculateV2(monkeys []*monkey) int {
-	for i := 0; i < 10000; i++ {
-		if i == 1 || i == 20 || i%1000 == 0 {
-			fmt.Printf("i: %d\n", i)
-			for _, m := range monkeys {
-				fmt.Printf("business: %d\n", m.business)
-			}
-		}
+	tests := []int{}
+	for _, m := range monkeys {
+		tests = append(tests, m.test)
+	}
+	supermodulo := 1
+	for _, t := range tests {
+		supermodulo *= t
+	}
 
+	for i := 0; i < 10000; i++ {
 		for _, m := range monkeys {
 			for _, item := range m.items {
 				m.business++
 				item = m.operation(item)
+				item %= supermodulo
 				if item%m.test == 0 {
 					monkeys[m.testTrue].addItem(item)
 				} else {
@@ -189,25 +193,3 @@ func buildMonkeysInput() []*monkey {
 	}
 	return monkeys
 }
-
-//func buildMonkeys(input [][]byte) []*monkey {
-//	monkeys = []*monkey{}
-//
-//	currentMonkey := 0
-//	for i := 0; i < len(input); i++ {
-//		if string(input[i][:5]) == "Monkey" {
-//			i++
-//			itemsStr := strings.Split(string(input[i][20:]), ", ")
-//			items := []int{}
-//			for _, is := range itemsStr {
-//				itemsInt, _ := strconv.Atoi(is)
-//				items = append(items, itemsInt)
-//			}
-//			i++
-//
-//
-//		}
-//
-//	}
-//
-//}
